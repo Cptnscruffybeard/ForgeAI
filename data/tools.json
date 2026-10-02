@@ -1,0 +1,224 @@
+[
+  {
+    "id": "tool-crm-lite",
+    "name": "FlowPilot CRM",
+    "slug": "flowpilot-crm",
+    "category": "Sales & CRM",
+    "description": "Lightweight CRM with lead tracking, reminders, pipelines and simple follow-up automation.",
+    "problems": [
+      "lead-follow-up",
+      "customer-tracking",
+      "sales-process"
+    ],
+    "industries": [
+      "home-services",
+      "professional-services",
+      "retail",
+      "general"
+    ],
+    "features": [
+      "lead tracking",
+      "automated follow-up",
+      "pipeline",
+      "reminders"
+    ],
+    "integrations": [
+      "email",
+      "calendar",
+      "webhooks"
+    ],
+    "price": "$19/mo",
+    "difficulty": "Easy",
+    "freeTier": true,
+    "verification": "verified",
+    "verifiedAt": "2026-10-02",
+    "sourceType": "vendor-submitted-demo-data",
+    "licenseStatus": "permissioned-demo",
+    "affiliate": false,
+    "url": "https://example.com/flowpilot"
+  },
+  {
+    "id": "tool-estimate",
+    "name": "QuoteForge",
+    "slug": "quoteforge",
+    "category": "Estimating & Proposals",
+    "description": "Mobile-first estimates and proposals for service businesses with reusable templates and customer approvals.",
+    "problems": [
+      "slow-estimates",
+      "paperwork",
+      "proposal-follow-up"
+    ],
+    "industries": [
+      "home-services",
+      "construction",
+      "field-services"
+    ],
+    "features": [
+      "mobile estimates",
+      "proposal templates",
+      "customer approvals",
+      "follow-up"
+    ],
+    "integrations": [
+      "email",
+      "calendar"
+    ],
+    "price": "$39/mo",
+    "difficulty": "Easy",
+    "freeTier": false,
+    "verification": "verified",
+    "verifiedAt": "2026-10-02",
+    "sourceType": "vendor-submitted-demo-data",
+    "licenseStatus": "permissioned-demo",
+    "affiliate": false,
+    "url": "https://example.com/quoteforge"
+  },
+  {
+    "id": "tool-bookkeeping",
+    "name": "LedgerLeaf",
+    "slug": "ledgerleaf",
+    "category": "Finance",
+    "description": "Small-business bookkeeping workflow with transaction categorization and invoice organization.",
+    "problems": [
+      "bookkeeping",
+      "invoice-processing",
+      "financial-admin"
+    ],
+    "industries": [
+      "general",
+      "home-services",
+      "professional-services"
+    ],
+    "features": [
+      "categorization",
+      "invoice organization",
+      "reports"
+    ],
+    "integrations": [
+      "bank-feed",
+      "csv"
+    ],
+    "price": "$29/mo",
+    "difficulty": "Easy",
+    "freeTier": true,
+    "verification": "verified",
+    "verifiedAt": "2026-10-02",
+    "sourceType": "vendor-submitted-demo-data",
+    "licenseStatus": "permissioned-demo",
+    "affiliate": false,
+    "url": "https://example.com/ledgerleaf"
+  },
+  {
+    "id": "tool-reception",
+    "name": "CallHarbor AI",
+    "slug": "callharbor-ai",
+    "category": "Customer Support",
+    "description": "AI receptionist for FAQs, lead qualification, message taking and appointment requests.",
+    "problems": [
+      "missed-calls",
+      "lead-qualification",
+      "appointment-booking"
+    ],
+    "industries": [
+      "home-services",
+      "medical",
+      "professional-services",
+      "general"
+    ],
+    "features": [
+      "AI phone answering",
+      "lead qualification",
+      "message taking",
+      "appointment requests"
+    ],
+    "integrations": [
+      "calendar",
+      "webhooks"
+    ],
+    "price": "$79/mo",
+    "difficulty": "Medium",
+    "freeTier": false,
+    "verification": "verified",
+    "verifiedAt": "2026-10-02",
+    "sourceType": "vendor-submitted-demo-data",
+    "licenseStatus": "permissioned-demo",
+    "affiliate": false,
+    "url": "https://example.com/callharbor"
+  },
+  {
+    "id": "tool-automation",
+    "name": "RelayGrid",
+    "slug": "relaygrid",
+    "category": "Automation",
+    "description": "Visual workflow automation connecting common business apps and webhooks.",
+    "problems": [
+      "repetitive-work",
+      "data-entry",
+      "lead-follow-up",
+      "admin-work"
+    ],
+    "industries": [
+      "general",
+      "home-services",
+      "professional-services",
+      "ecommerce"
+    ],
+    "features": [
+      "workflow automation",
+      "webhooks",
+      "scheduled jobs",
+      "data routing"
+    ],
+    "integrations": [
+      "webhooks",
+      "email",
+      "calendar",
+      "csv"
+    ],
+    "price": "$15/mo",
+    "difficulty": "Medium",
+    "freeTier": true,
+    "verification": "verified",
+    "verifiedAt": "2026-10-02",
+    "sourceType": "vendor-submitted-demo-data",
+    "licenseStatus": "permissioned-demo",
+    "affiliate": false,
+    "url": "https://example.com/relaygrid"
+  },
+  {
+    "id": "tool-content",
+    "name": "ContentMint",
+    "slug": "contentmint",
+    "category": "Marketing",
+    "description": "AI-assisted content planning and reusable marketing drafts for small teams.",
+    "problems": [
+      "content-production",
+      "social-media",
+      "marketing-consistency"
+    ],
+    "industries": [
+      "general",
+      "retail",
+      "home-services",
+      "professional-services"
+    ],
+    "features": [
+      "content planning",
+      "draft generation",
+      "content calendar"
+    ],
+    "integrations": [
+      "csv",
+      "calendar"
+    ],
+    "price": "$18/mo",
+    "difficulty": "Easy",
+    "freeTier": true,
+    "verification": "verified",
+    "verifiedAt": "2026-10-02",
+    "sourceType": "vendor-submitted-demo-data",
+    "licenseStatus": "permissioned-demo",
+    "affiliate": false,
+    "url": "https://example.com/contentmint"
+  }
+]

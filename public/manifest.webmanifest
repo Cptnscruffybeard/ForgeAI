@@ -1,0 +1,13 @@
+{
+  "name":"ForgeAI Business Solver",
+  "short_name":"ForgeAI",
+  "description":"Diagnose business problems and find software that fits.",
+  "start_url":"/",
+  "display":"standalone",
+  "background_color":"#07100e",
+  "theme_color":"#07100e",
+  "orientation":"portrait-primary",
+  "icons":[
+    {"src":"/icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
+  ]
+}
