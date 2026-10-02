@@ -4,15 +4,14 @@ This package is prepared for Cloudflare Pages with Pages Functions.
 
 ## One-time setup
 
-1. Create a new GitHub repository.
-2. Upload the contents of this folder to the repository root.
-3. In Cloudflare: **Workers & Pages → Create application → Pages → Import an existing Git repository**.
-4. Select the repository.
-5. Use:
+1. Push this repository to GitHub (the project files must live at the repository root, not inside a zip).
+2. In Cloudflare: **Workers & Pages → Create application → Pages → Import an existing Git repository**.
+3. Select the repository.
+4. Use:
    - Production branch: `main`
    - Build command: `npm run build`
    - Build output directory: `dist`
-6. Deploy.
+5. Deploy.
 
 Cloudflare will provide a `*.pages.dev` URL.
 
@@ -34,6 +33,18 @@ npm install
 npm run build
 npx wrangler pages dev dist
 ```
+
+Security headers live in `public/_headers` so the build copies them into `dist/`, where Cloudflare Pages reads them.
+
+## Tests
+
+```bash
+npm test
+```
+
+## Legacy Node server
+
+`server.js` is the earlier standalone Node build (admin discovery endpoint, JSON-file storage). It is not used by the Cloudflare deployment; `.env.example` documents its variables.
 
 ## Important
 
