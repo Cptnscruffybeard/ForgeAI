@@ -4,8 +4,8 @@
   "description":"Diagnose business problems and find software that fits.",
   "start_url":"/",
   "display":"standalone",
-  "background_color":"#07100e",
-  "theme_color":"#07100e",
+  "background_color":"#0b0c10",
+  "theme_color":"#0b0c10",
   "orientation":"portrait-primary",
   "icons":[
     {"src":"/icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}

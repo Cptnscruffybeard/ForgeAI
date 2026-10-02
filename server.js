@@ -6,12 +6,13 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
 const PUBLIC = path.join(ROOT, 'public');
+const VERSION = '0.5.0';
 const DATA = path.join(ROOT, 'data');
 const PORT = Number(process.env.PORT || 3000);
 const NODE_ENV = process.env.NODE_ENV || 'development';
 const ADMIN_KEY = process.env.ADMIN_KEY || '';
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY || '';
-const OPENAI_MODEL = process.env.OPENAI_MODEL || 'gpt-6-luna';
+const OPENAI_MODEL = process.env.OPENAI_MODEL || 'gpt-5.6-luna';
 const MAX_BODY = 64 * 1024;
 const RATE_WINDOW = 60_000;
 const RATE_LIMIT = 60;
@@ -23,7 +24,7 @@ const securityHeaders = {
   'Referrer-Policy': 'strict-origin-when-cross-origin',
   'X-Content-Type-Options': 'nosniff',
   'X-Frame-Options': 'DENY',
-  'Permissions-Policy': 'camera=(), microphone=(), geolocation=(), payment=() ',
+  'Permissions-Policy': 'camera=(), microphone=(), geolocation=(), payment=()',
   'Cross-Origin-Opener-Policy': 'same-origin',
   'Cross-Origin-Resource-Policy': 'same-origin',
   'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload',
@@ -37,7 +38,7 @@ async function readJson(file, fallback) {
 async function writeJson(file, value) {
   const target = path.join(DATA, file);
   const temp = `${target}.tmp-${crypto.randomBytes(6).toString('hex')}`;
-  writeQueue = writeQueue.then(async () => {
+  writeQueue = writeQueue.catch(() => {}).then(async () => {
     await fs.writeFile(temp, JSON.stringify(value, null, 2), { mode: 0o600 });
     await fs.rename(temp, target);
   });
@@ -51,6 +52,7 @@ function json(res, status, payload, requestId) {
 function safeText(v, max=500) { return typeof v === 'string' ? v.replace(/[\u0000-\u001f\u007f]/g, '').trim().slice(0,max) : ''; }
 function rateLimited(ip) {
   const now = Date.now(); const old = rate.get(ip);
+  if (rate.size > 10_000) for (const [key, entry] of rate) if (now - entry.start > RATE_WINDOW) rate.delete(key);
   if (!old || now - old.start > RATE_WINDOW) { rate.set(ip, {start:now,count:1}); return false; }
   old.count++; return old.count > RATE_LIMIT;
 }
@@ -58,7 +60,10 @@ async function body(req) {
   let size = 0, chunks = [];
   for await (const chunk of req) { size += chunk.length; if (size > MAX_BODY) throw new Error('BODY_TOO_LARGE'); chunks.push(chunk); }
   if (!size) return {};
-  try { return JSON.parse(Buffer.concat(chunks).toString('utf8')); } catch { throw new Error('BAD_JSON'); }
+  let parsed;
+  try { parsed = JSON.parse(Buffer.concat(chunks).toString('utf8')); } catch { throw new Error('BAD_JSON'); }
+  if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) throw new Error('BAD_JSON');
+  return parsed;
 }
 function problemFrom(text='') {
   const s = text.toLowerCase();
@@ -103,8 +108,14 @@ async function audit(event, req, extra={}) {
   await writeJson('audit.json', list.slice(-5000));
 }
 function publicTool(t) {
+  if (!t) return null;
   const { affiliate, licenseStatus, sourceType, ...safe } = t;
   return safe;
+}
+function outputText(data) {
+  if (typeof data?.output_text === 'string') return data.output_text;
+  if (!Array.isArray(data?.output)) return '';
+  return data.output.filter(item => item?.type === 'message' && Array.isArray(item.content)).flatMap(item => item.content).filter(part => part?.type === 'output_text' && typeof part.text === 'string').map(part => part.text).join('');
 }
 async function aiDiagnose(answers, verifiedTools) {
   if (!OPENAI_API_KEY) return null;
@@ -116,12 +127,14 @@ async function aiDiagnose(answers, verifiedTools) {
   try {
     const r = await fetch('https://api.openai.com/v1/responses', {
       method:'POST', headers:{'Authorization':`Bearer ${OPENAI_API_KEY}`,'Content-Type':'application/json'},
-      body:JSON.stringify({model:OPENAI_MODEL,instructions:system,input,store:false}), signal:controller.signal
+      body:JSON.stringify({model:OPENAI_MODEL,instructions:system,input,text:{format:{type:'json_object'}},store:false}), signal:controller.signal
     });
     if (!r.ok) throw new Error(`AI provider returned ${r.status}`);
     const data = await r.json();
-    const text = safeText(data.output_text, 8000);
+    const text = safeText(outputText(data), 8000);
     const parsed = JSON.parse(text);
+    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) throw new Error('AI returned non-object JSON');
+    parsed.bottlenecks = Array.isArray(parsed.bottlenecks) ? parsed.bottlenecks.map(x=>safeText(x,200)).filter(Boolean).slice(0,6) : [];
     const ids = new Set(verifiedTools.map(t=>t.id));
     parsed.recommendations = Array.isArray(parsed.recommendations) ? parsed.recommendations.filter(x=>ids.has(x?.toolId)).slice(0,3) : [];
     return { ...parsed, source:'ai+verified-catalog' };
@@ -153,7 +166,7 @@ async function discover(req, res, requestId) {
 }
 async function api(req,res,url,requestId) {
   if (rateLimited(req.socket.remoteAddress || 'unknown')) return json(res,429,{error:'Too many requests. Try again shortly.'},requestId);
-  if (req.method === 'GET' && url.pathname === '/api/health') return json(res,200,{ok:true,aiConfigured:Boolean(OPENAI_API_KEY),version:'0.3.0'},requestId);
+  if (req.method === 'GET' && url.pathname === '/api/health') return json(res,200,{ok:true,aiConfigured:Boolean(OPENAI_API_KEY),version:VERSION},requestId);
   if (req.method === 'GET' && url.pathname === '/api/tools') {
     const all = await tools(); const q=safeText(url.searchParams.get('q'),100).toLowerCase(); const cat=safeText(url.searchParams.get('category'),80); const ind=safeText(url.searchParams.get('industry'),80).toLowerCase();
     const out=all.filter(t=>t.verification==='verified').filter(t=>!q || [t.name,t.description,t.category,...t.problems,...t.features].join(' ').toLowerCase().includes(q)).filter(t=>!cat||t.category===cat).filter(t=>!ind||t.industries.includes(ind)||t.industries.includes('general')).map(publicTool);
@@ -175,12 +188,12 @@ async function api(req,res,url,requestId) {
   if (req.method === 'POST' && url.pathname === '/api/feedback') {
     try { const b=await body(req); const feedback={id:crypto.randomUUID(),toolId:safeText(b.toolId,100),outcome:['yes','partial','no'].includes(b.outcome)?b.outcome:'unknown',createdAt:new Date().toISOString()}; const list=await readJson('feedback.json',[]); list.push(feedback); await writeJson('feedback.json',list); return json(res,201,{ok:true},requestId); } catch { return json(res,400,{error:'Invalid request.'},requestId); }
   }
-  if (req.method === 'POST' && url.pathname === '/api/admin/discover') return discover(req,res,requestId);
+  if (req.method === 'POST' && url.pathname === '/api/admin/discover') return discover(req,res,requestId).catch(e => json(res,e.message==='BODY_TOO_LARGE'?413:400,{error:'Invalid request.'},requestId));
   return json(res,404,{error:'Not found'},requestId);
 }
 async function serve(req,res,requestId) {
   let file;
-  try { file = req.url === '/' ? 'index.html' : decodeURIComponent(new URL(req.url,'http://localhost').pathname).replace(/^\/+/, ''); }
+  try { file = decodeURIComponent(new URL(req.url,'http://localhost').pathname).replace(/^\/+/, '') || 'index.html'; }
   catch { return json(res,400,{error:'Bad path'},requestId); }
   const publicRoot = path.resolve(PUBLIC); const target = path.resolve(PUBLIC, file);
   if (!target.startsWith(publicRoot + path.sep)) return json(res,403,{error:'Forbidden'},requestId);
@@ -188,4 +201,4 @@ async function serve(req,res,requestId) {
 }
 if (NODE_ENV === 'production' && !ADMIN_KEY) console.error('SECURITY: ADMIN_KEY must be set in production.');
 const server=http.createServer(async (req,res)=>{ const requestId=crypto.randomUUID(); try { const u=new URL(req.url,`http://${req.headers.host||'localhost'}`); if(u.pathname.startsWith('/api/')) return await api(req,res,u,requestId); return await serve(req,res,requestId); } catch { return json(res,500,{error:'Internal server error',requestId},requestId); } });
-server.listen(PORT,()=>console.log(`ForgeAI v0.3.0 listening on http://localhost:${PORT}`));
+server.listen(PORT,()=>console.log(`ForgeAI v${VERSION} listening on http://localhost:${PORT}`));
