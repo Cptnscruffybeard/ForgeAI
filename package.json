@@ -1,0 +1,17 @@
+{
+  "name": "forgeai",
+  "version": "0.5.0-cloudflare",
+  "private": true,
+  "description": "ForgeAI — business problem diagnosis and software discovery SaaS",
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "build": "rm -rf dist && cp -r public/. dist/ && mkdir -p dist/data && cp data/tools.json dist/data/tools.json",
+    "dev": "npx wrangler pages dev dist",
+    "preview": "npx wrangler pages dev dist",
+    "start": "npx wrangler pages dev dist"
+  },
+  "devDependencies": {
+    "wrangler": "^4.0.0"
+  }
+}

@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0c10"><meta name="description" content="ForgeAI helps businesses find software for real problems.">
+<meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg"><title>ForgeAI — Find the right software</title><link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="nav"><a class="logo" href="#home"><span class="logo-mark">F</span><span>forge<span class="accent">ai</span></span></a><nav><a href="#solve">Solve a problem</a><a href="#tools">Browse tools</a></nav><button id="installBtn" class="nav-install" hidden>Install</button></header>
+<main>
+<section id="home" class="hero">
+  <div class="hero-inner">
+    <div class="badge"><span></span> Business software, without the guesswork</div>
+    <h1>Tell us what’s<br><i>slowing you down.</i></h1>
+    <p class="hero-sub">ForgeAI figures out what kind of software you need, then shows you the options that actually fit.</p>
+    <div id="solve" class="solve-box">
+      <div class="solve-top"><span>What are you trying to fix?</span><span class="privacy">Private by design</span></div>
+      <textarea id="problem" maxlength="700" placeholder="“We’re losing leads because nobody follows up fast enough…”"></textarea>
+      <div class="solve-controls">
+        <select id="industry"><option value="general">Any industry</option><option value="home-services">Home services</option><option value="construction">Construction / field services</option><option value="professional-services">Professional services</option><option value="retail">Retail</option><option value="ecommerce">E-commerce</option><option value="medical">Medical</option></select>
+        <select id="budget"><option value="">Any budget</option><option value="50">Under $50/mo</option><option value="100">Under $100/mo</option><option value="250">Under $250/mo</option><option value="500">Under $500/mo</option></select>
+        <button id="diagnoseBtn" class="primary">Find my solution <span>↗</span></button>
+      </div>
+      <div id="diagStatus" class="status"></div>
+    </div>
+    <div class="starter-row"><button data-fill="I am losing leads because I cannot follow up fast enough.">Lost leads</button><button data-fill="My estimates and proposals take too long.">Slow estimates</button><button data-fill="We miss calls and customers cannot reach us.">Missed calls</button><button data-fill="We spend too much time on repetitive admin work.">Manual work</button></div>
+  </div>
+</section>
+
+<section id="results" class="results-wrap hidden"><div class="results-inner"><button class="back" data-back>← Start over</button><div id="resultsContent"></div></div></section>
+
+<section id="tools" class="tools-section">
+  <div class="section-inner">
+    <div class="section-title"><div><span class="kicker">THE DIRECTORY</span><h2>Tools that solve problems.</h2></div><p>Verified listings. Clear details. No paid ranking.</p></div>
+    <div class="tool-search"><span>⌕</span><input id="search" placeholder="Search tools or problems…" autocomplete="off"><select id="category"><option value="">All</option></select></div>
+    <div id="toolGrid" class="tool-grid"></div>
+  </div>
+</section>
+
+<section id="saved" class="saved-section"><div class="section-inner"><div class="section-title"><div><span class="kicker">YOUR SHORTLIST</span><h2>Saved tools.</h2></div><p>Kept on this device.</p></div><div id="savedGrid" class="tool-grid"></div></div></section>
+</main>
+<footer><div class="footer-inner"><a class="logo" href="#home"><span class="logo-mark">F</span><span>forge<span class="accent">ai</span></span></a><div><a href="legal.html">Privacy</a><a href="legal.html">Terms</a><a href="legal.html">Disclosure</a></div><small>Pre-public build · Demo catalog</small></div></footer>
+<nav class="bottom-nav"><a href="#home"><b>⌂</b><span>Home</span></a><a href="#solve"><b>✦</b><span>Solve</span></a><a href="#tools"><b>⌕</b><span>Tools</span></a><a href="#saved"><b>♡</b><span>Saved</span></a></nav>
+<div id="toast" class="toast"></div><script src="app.js" defer></script>
+</body></html>
