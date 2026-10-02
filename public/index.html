@@ -16,10 +16,10 @@
     <p class="hero-sub">ForgeAI figures out what kind of software you need, then shows you the options that actually fit.</p>
     <div id="solve" class="solve-box">
       <div class="solve-top"><span>What are you trying to fix?</span><span class="privacy">Private by design</span></div>
-      <textarea id="problem" maxlength="700" placeholder="“We’re losing leads because nobody follows up fast enough…”"></textarea>
+      <textarea id="problem" maxlength="700" aria-label="Describe the problem you want to fix" placeholder="“We’re losing leads because nobody follows up fast enough…”"></textarea>
       <div class="solve-controls">
-        <select id="industry"><option value="general">Any industry</option><option value="home-services">Home services</option><option value="construction">Construction / field services</option><option value="professional-services">Professional services</option><option value="retail">Retail</option><option value="ecommerce">E-commerce</option><option value="medical">Medical</option></select>
-        <select id="budget"><option value="">Any budget</option><option value="50">Under $50/mo</option><option value="100">Under $100/mo</option><option value="250">Under $250/mo</option><option value="500">Under $500/mo</option></select>
+        <select id="industry" aria-label="Industry"><option value="general">Any industry</option><option value="home-services">Home services</option><option value="construction">Construction / field services</option><option value="professional-services">Professional services</option><option value="retail">Retail</option><option value="ecommerce">E-commerce</option><option value="medical">Medical</option></select>
+        <select id="budget" aria-label="Monthly budget"><option value="">Any budget</option><option value="50">Under $50/mo</option><option value="100">Under $100/mo</option><option value="250">Under $250/mo</option><option value="500">Under $500/mo</option></select>
         <button id="diagnoseBtn" class="primary">Find my solution <span>↗</span></button>
       </div>
       <div id="diagStatus" class="status"></div>
@@ -33,14 +33,14 @@
 <section id="tools" class="tools-section">
   <div class="section-inner">
     <div class="section-title"><div><span class="kicker">THE DIRECTORY</span><h2>Tools that solve problems.</h2></div><p>Verified listings. Clear details. No paid ranking.</p></div>
-    <div class="tool-search"><span>⌕</span><input id="search" placeholder="Search tools or problems…" autocomplete="off"><select id="category"><option value="">All</option></select></div>
+    <div class="tool-search"><span aria-hidden="true">⌕</span><input id="search" type="search" aria-label="Search tools or problems" placeholder="Search tools or problems…" autocomplete="off"><select id="category" aria-label="Category"><option value="">All</option></select></div>
     <div id="toolGrid" class="tool-grid"></div>
   </div>
 </section>
 
 <section id="saved" class="saved-section"><div class="section-inner"><div class="section-title"><div><span class="kicker">YOUR SHORTLIST</span><h2>Saved tools.</h2></div><p>Kept on this device.</p></div><div id="savedGrid" class="tool-grid"></div></div></section>
 </main>
-<footer><div class="footer-inner"><a class="logo" href="#home"><span class="logo-mark">F</span><span>forge<span class="accent">ai</span></span></a><div><a href="legal.html">Privacy</a><a href="legal.html">Terms</a><a href="legal.html">Disclosure</a></div><small>Pre-public build · Demo catalog</small></div></footer>
+<footer><div class="footer-inner"><a class="logo" href="#home"><span class="logo-mark">F</span><span>forge<span class="accent">ai</span></span></a><div><a href="legal.html#privacy">Privacy</a><a href="legal.html#terms">Terms</a><a href="legal.html#disclosure">Disclosure</a></div><small>Pre-public build · Demo catalog</small></div></footer>
 <nav class="bottom-nav"><a href="#home"><b>⌂</b><span>Home</span></a><a href="#solve"><b>✦</b><span>Solve</span></a><a href="#tools"><b>⌕</b><span>Tools</span></a><a href="#saved"><b>♡</b><span>Saved</span></a></nav>
 <div id="toast" class="toast"></div><script src="app.js" defer></script>
 </body></html>
